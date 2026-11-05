@@ -110,6 +110,8 @@ A push that stops half way is safe to run again. It continues and does not make 
   merged edits from others. Tell the user to look at `git diff` before committing.
 - **`arcus.lock` changed.** New tests add a row. Tell the user to commit it with the tests: the lock is how a teammate
   works on the same Arcus tests and not on copies. Do not commit for them unless they ask.
+- **Pushed from `/arcus:verify`.** The tests are pending cases on the story. Say that the developer accepts them after
+  the PR merges, and do not offer `--accept` now.
 - **Run status.** Say what you know. If a test was run in this session and passed, say so. If it was run and failed, say
   that it was pushed anyway. If it was never run here, say that a clean check and a push do not prove it passes against
   the app, and offer `/arcus:run`. A run is not a condition for a push.

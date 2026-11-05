@@ -141,6 +141,8 @@ Then hand over. The next step is a run, then a push:
   skill now. Do not ask again.
 - Otherwise offer `/arcus:run` first, and `/arcus:push` after it. Offer a run only for a project with `web` in its
   platforms. A run cannot test Android or iOS yet.
+- The user wants a change on a story proven with the story's own cases: that is `/arcus:verify`, which calls this skill
+  for each case.
 - The user asks to push now: hand over to the `push` skill. It will say that the test was not run. Do not run
   `arcus push` or `arcus run` from here.
 

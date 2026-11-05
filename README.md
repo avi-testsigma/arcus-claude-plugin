@@ -9,6 +9,7 @@ the talking to Arcus. The plugin itself sends nothing anywhere.
 - Claude Code.
 - The `arcus` CLI, on your `PATH`: `npm i -g @testsigma/arcus-cli`. It needs Node 22 or newer. `/arcus:run` needs CLI
   0.1.1 or newer. `/arcus:push` names the Arcus project and folder, and links each test, from CLI 0.1.3.
+  `/arcus:verify` needs the CLI's sprint, issue and QI push commands (`arcus sprint --help` works).
 - An Arcus account. You sign in yourself, in a terminal: `arcus auth login --region us|in|eu`. Only `push` and `init`
   need it. Writing, checking and running do not.
 - To run tests: the Testsigma agent, running on your machine. It gives the CLI the browsers.
@@ -59,6 +60,7 @@ claude plugin install arcus@testsigma
 | `/arcus:author [what to test]` | Writes tests and elements as `.sigma` files, learns the language from `arcus docs`, and loops `arcus check` and `arcus fmt` until clean |
 | `/arcus:run [test]` | Runs one test in a browser on your machine, reads the result and the screenshot, and says whether the test, the app or the setup is wrong. Nothing is sent to Arcus |
 | `/arcus:push [files]` | Runs `arcus push --dry-run`, shows the plan in words, pushes after your yes, and explains every result |
+| `/arcus:verify [story]` | For a change to a user-facing flow: automates the story's test cases from Arcus, runs them against your local app until they pass, writes one "Ran locally" PR comment, and pushes the tests as pending cases on the story. Never edits what an approved case expects, and never accepts |
 | `/arcus:help` | Shows the commands and the usual flow |
 
 **Typical flow:** `/arcus:setup` once per repo, then `/arcus:author <what to test>`, then `/arcus:run`, look at the
@@ -71,6 +73,9 @@ setup ──► author ──► run ──► push
             └─ fix ───┘
 ```
 
+`/arcus:verify` runs the same steps for the cases of one story, ending in a PR comment and a pending push. The developer
+accepts the cases into Arcus after the PR merges.
+
 ## How it behaves
 
 - **Nothing is pushed without a plan you have seen.** `/arcus:push` always starts with a dry run and asks.
@@ -82,6 +87,8 @@ setup ──► author ──► run ──► push
   test, the app or the setup is wrong. It fixes the test when the test is wrong, at most three rounds.
 - **Secrets stay out of the command.** Claude never types a password into a run and never reads `.env` files. A secret is
   passed by reference to a variable you set in your own terminal.
+- **A story's cases are the bar.** `/arcus:verify` automates what Arcus says must pass, and changes no case to match the
+  app. A failure that looks like an intended change is listed for QA or the PM to decide.
 - **Arcus is the source of truth.** There is no `pull` yet. When Arcus and your file disagree, the push says so, and
   Claude tells you, and does not work around it.
 
@@ -91,7 +98,8 @@ setup ──► author ──► run ──► push
   datasets or groups yet, and there is no suite run. A local pass is not an Arcus run.
 - Not supported yet, because the CLI refuses them: `api` steps, groups, `host` lines, header lines such as `tags`,
   and sub-folders under `tests/`.
-- Sprint and story mapping, and session capture, from earlier versions of this plugin, are gone.
+- Session capture, from earlier versions of this plugin, is gone. Stories come back through the CLI's sprint and issue
+  commands, for `/arcus:verify`.
 
 ## Privacy
 
@@ -106,7 +114,7 @@ elements to the Arcus project you chose, using your own sign-in. See the
 plugins/arcus/
   .claude-plugin/plugin.json        the plugin manifest
   commands/help.md                  /arcus:help
-  skills/{setup,author,run,push}/   one SKILL.md each
+  skills/{setup,author,run,push,verify}/ one SKILL.md each
   references/                       notes the skills read when they need them
   tests/                            tests of the documents (pytest)
   evals/                            behavioural cases: `claude plugin eval plugins/arcus`

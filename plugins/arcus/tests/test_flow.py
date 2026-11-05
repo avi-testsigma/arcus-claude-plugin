@@ -1,4 +1,4 @@
-"""The skills are one flow: setup, author, run, push. These tests check that the documents agree on it."""
+"""The skills are one flow: setup, author, run, push, and verify over them. These tests check that the documents agree on it."""
 
 import re
 
@@ -14,6 +14,7 @@ HANDOVERS = {
     "author": {"setup", "run", "push"},
     "run": {"setup", "author", "push"},
     "push": {"setup", "author", "run"},
+    "verify": {"setup", "author", "run", "push"},
 }
 
 

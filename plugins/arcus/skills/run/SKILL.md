@@ -116,7 +116,8 @@ Say, briefly:
 - the test, its result, the browser and version, and the time,
 - for a failure: the step, the owner, and the evidence in a sentence,
 - any file you changed (the user should look at `git diff`),
-- the next step: for a pass, `/arcus:push`. For a failure that is the app's, nothing to push yet.
+- the next step: for a pass, `/arcus:push`. For a failure that is the app's, nothing to push yet. For a change on a story,
+  `/arcus:verify` runs the story's cases and writes the PR comment.
 
 ## Say no to what a local run cannot do yet
 

@@ -18,6 +18,9 @@ pushes them. The plugin teaches Claude to use it well, and it sends nothing to A
   rounds, and never weakens a test to make it pass. Nothing is sent to Arcus. No sign-in is needed.
 - `/arcus:push [files]` — Send tests and elements to Arcus. Always starts with `arcus push --dry-run` and shows you the
   plan. Says which Arcus project and folder it goes to. Pushes only after you say yes, then says where it went and explains every result.
+- `/arcus:verify [story]` — After a change to a user-facing flow: finds the story's test cases in Arcus, automates them,
+  runs them against your local app until they pass, writes one "Ran locally" comment for the PR, and pushes the tests as
+  pending cases on the story. It never changes what an approved case expects, and never accepts.
 
 ## Typical flow
 
@@ -27,6 +30,9 @@ pushes them. The plugin teaches Claude to use it well, and it sends nothing to A
    steps 2 and 3 together.
 4. Look at the files, and at `git diff`.
 5. `/arcus:push` — read the plan, say yes, and commit `arcus.lock` with the tests.
+
+For a change on a story, `/arcus:verify` does steps 2 to 5 for the story's cases. Accept them into Arcus after the PR
+merges.
 
 ## This version
 

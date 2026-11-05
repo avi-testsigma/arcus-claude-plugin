@@ -2,7 +2,7 @@ import re
 
 import pytest
 
-from support import COMMANDS_DIR, REPO_ROOT, SKILL_MAX_LINES, SKILLS, SKILLS_DIR, frontmatter, prose, read, skill_path
+from support import COMMANDS_DIR, PLUGIN_ROOT, REPO_ROOT, SKILL_MAX_LINES, SKILLS, SKILLS_DIR, frontmatter, prose, read, skill_path
 
 
 def test_the_skills_are_the_expected_ones():
@@ -101,3 +101,32 @@ def test_run_needs_no_sign_in_and_never_pushes():
 
 def test_run_reads_the_screenshot():
     assert "Read tool" in prose(skill_path("run"))
+
+
+def test_verify_automates_the_story_cases_and_invents_none():
+    text = prose(skill_path("verify"))
+    assert "arcus test list --sprint <id> --issue-id <key> --json" in text
+    assert "Never guess a story" in text
+    assert "Do not invent cases" in text
+    assert "The test's title is the case's title, exactly" in text
+
+
+def test_verify_never_edits_what_an_approved_case_expects():
+    text = prose(skill_path("verify"))
+    assert "**Do not edit the step or the `verify`.** It is an intent change" in text
+    assert "Never weaken a test to make it pass" in text
+
+
+def test_verify_labels_the_run_as_local_and_asks_before_posting():
+    text = prose(skill_path("verify"))
+    assert "the developer's own run on their machine" in text
+    assert 'never says "passed in Arcus"' in text
+    assert "post it only after a yes, once per PR" in text
+    assert "<!-- arcus:ran-locally -->" in prose(PLUGIN_ROOT / "references" / "verifying.md")
+
+
+def test_verify_pushes_pending_and_never_accepts():
+    text = prose(skill_path("verify"))
+    assert "--sprint <id> --issue-id <key>" in text
+    assert "Never pass `--accept`" in text
+    assert "ARCUS_PUSH_DIRECT_LIBRARY" in text

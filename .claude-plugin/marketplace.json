@@ -8,7 +8,7 @@
     {
       "name": "arcus",
       "source": "./plugins/arcus",
-      "description": "Author, check, run and push Arcus tests with the arcus CLI: write .sigma tests and elements in your repo, validate them offline, run them in a browser on your machine, and send them to an Arcus project."
+      "description": "Author, check, run and push Arcus tests with the arcus CLI: write .sigma tests and elements in your repo, validate them offline, run them in a browser on your machine, send them to an Arcus project, and verify a change against its story's cases."
     }
   ],
   "renames": {

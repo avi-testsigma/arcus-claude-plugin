@@ -8,7 +8,8 @@ The first plugin captured Claude Code sessions and pushed `*.spec.ts` tests with
 
 - **Session capture is gone.** No hooks, no ingest, no ticket mapping, no session-linking. The plugin sends nothing
   itself; the CLI is the only thing that talks to Arcus.
-- **Sprint and story mapping is gone.** The new CLI has no such concept.
+- **Sprint and story mapping is gone.** The new CLI had no such concept. It came back with the CLI's sprint, issue and
+  QI push commands, for `verify`: see `design-verify-flow.md`.
 - **No run in 0.7.0.** The CLI did not run tests then. Running arrived in 0.8.0: see `design-run-skill.md`. What 0.7.0
   skipped for want of a run (the live-target preflight, reading run results, a verify-by-running loop) is there. The
   Android device and `adb` flow is still skipped: `arcus run` tests web only.
