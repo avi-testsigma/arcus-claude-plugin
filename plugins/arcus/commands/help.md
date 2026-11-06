@@ -21,6 +21,10 @@ pushes them. The plugin teaches Claude to use it well, and it sends nothing to A
 - `/arcus:verify [story]` — After a change to a user-facing flow: finds the story's test cases in Arcus, automates them,
   runs them against your local app until they pass, writes one "Ran locally" comment for the PR, and pushes the tests as
   pending cases on the story. It never changes what an approved case expects, and never accepts.
+- `/arcus:pr-check` — Once a PR's build is deployed (in CI, from a "/arcus test" PR comment): runs the story's tests on
+  the PR's build and on the base build, then writes scenarios to try to break the change. Only what fails on the PR and
+  passes on the base counts. Arcus judges each against the story and writes one check and one PR comment. A story case
+  that breaks blocks the merge; the rest is advisory.
 
 ## Typical flow
 

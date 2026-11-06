@@ -61,6 +61,7 @@ claude plugin install arcus@testsigma
 | `/arcus:run [test]` | Runs one test in a browser on your machine, reads the result and the screenshot, and says whether the test, the app or the setup is wrong. Nothing is sent to Arcus |
 | `/arcus:push [files]` | Runs `arcus push --dry-run`, shows the plan in words, pushes after your yes, and explains every result |
 | `/arcus:verify [story]` | For a change to a user-facing flow: automates the story's test cases from Arcus, runs them against your local app until they pass, writes one "Ran locally" PR comment, and pushes the tests as pending cases on the story. Never edits what an approved case expects, and never accepts |
+| `/arcus:pr-check` | For a deployed PR, in CI or by hand: runs the story's tests on the PR's build and the base build, writes new scenarios to try to break the change, keeps only what fails on the PR alone, and has Arcus judge each against the story into one check and one PR comment. A story case that breaks blocks; the rest is advisory |
 | `/arcus:help` | Shows the commands and the usual flow |
 
 **Typical flow:** `/arcus:setup` once per repo, then `/arcus:author <what to test>`, then `/arcus:run`, look at the
@@ -74,7 +75,8 @@ setup ──► author ──► run ──► push
 ```
 
 `/arcus:verify` runs the same steps for the cases of one story, ending in a PR comment and a pending push. The developer
-accepts the cases into Arcus after the PR merges.
+accepts the cases into Arcus after the PR merges. Once the PR's build is deployed, `/arcus:pr-check` tests it against
+the base build and tries to break it.
 
 ## How it behaves
 
@@ -103,7 +105,8 @@ accepts the cases into Arcus after the PR merges.
 
 ## Privacy
 
-The plugin sends nothing by itself: it has no hooks and no scripts. When you push, the `arcus` CLI sends your tests and
+The plugin sends nothing by itself: it has no hooks, and its one script (`scripts/pr-check.mjs`) only runs the `arcus`
+CLI and reads its output. When you push, the `arcus` CLI sends your tests and
 elements to the Arcus project you chose, using your own sign-in. See the
 [Testsigma Privacy Policy](https://testsigma.com/privacy-policy).
 
@@ -114,7 +117,8 @@ elements to the Arcus project you chose, using your own sign-in. See the
 plugins/arcus/
   .claude-plugin/plugin.json        the plugin manifest
   commands/help.md                  /arcus:help
-  skills/{setup,author,run,push,verify}/ one SKILL.md each
+  skills/{setup,author,run,push,verify,pr-check}/ one SKILL.md each
+  scripts/pr-check.mjs              the comparison /arcus:pr-check runs (node --test scripts/)
   references/                       notes the skills read when they need them
   tests/                            tests of the documents (pytest)
   evals/                            behavioural cases: `claude plugin eval plugins/arcus`

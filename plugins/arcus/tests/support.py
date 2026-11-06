@@ -13,7 +13,7 @@ COMMANDS_DIR = PLUGIN_ROOT / "commands"
 REFERENCES_DIR = PLUGIN_ROOT / "references"
 
 #: The skills this plugin has. A new skill is added here on purpose, with its tests.
-SKILLS = ("setup", "author", "run", "push", "verify")
+SKILLS = ("setup", "author", "run", "push", "verify", "pr-check")
 
 #: A skill is read in full every time it loads, so it has a size budget. Detail goes in references/.
 SKILL_MAX_LINES = 200
@@ -80,11 +80,13 @@ CLI_SURFACE = {
     "issue list": {"--project"},
     "test show": set(),
     "test list": {"--project", "--folder", "--automated", "--sprint", "--issue-id", "--module", "--drafts"},
+    "pr-check context": {"--project", "--issue-id"},
+    "pr-check report": {"--project", "--post"},
 }
 GLOBAL_FLAGS = {"--json", "--help", "--version"}
 
 COMMAND = re.compile(
-    r"\barcus (auth (?:login|logout|status)|project (?:list|(?:platforms|sources)(?: (?:add|remove))?)|init|check|fmt|docs|push|run|browsers list|sprint (?:list|show)|issue list|test (?:list|show))\b([^\n`]*)"
+    r"\barcus (auth (?:login|logout|status)|project (?:list|(?:platforms|sources)(?: (?:add|remove))?)|init|check|fmt|docs|push|run|browsers list|sprint (?:list|show)|issue list|test (?:list|show)|pr-check (?:context|report))\b([^\n`]*)"
 )
 FLAG = re.compile(r"(?<![\w-])(--[a-z][a-z-]*)")
 
