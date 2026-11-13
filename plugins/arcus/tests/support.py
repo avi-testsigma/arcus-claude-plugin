@@ -13,7 +13,7 @@ COMMANDS_DIR = PLUGIN_ROOT / "commands"
 REFERENCES_DIR = PLUGIN_ROOT / "references"
 
 #: The skills this plugin has. A new skill is added here on purpose, with its tests.
-SKILLS = ("setup", "context", "author", "run", "verify", "push", "accept", "sync", "mode")
+SKILLS = ("setup", "context", "author", "run", "verify", "push", "accept", "sync", "mode", "pr-check")
 
 #: A skill is read in full every time it loads, so it has a size budget. Detail goes in references/.
 SKILL_MAX_LINES = 200
@@ -94,6 +94,7 @@ CLI_SURFACE = {
         "--platform", "--headed", "--browser", "--device", "--app", "--screenshots", "--base-url", "--timeout", "--var",
         "--note", "--project",
     },
+    "issue judge": {"--post", "--project"},
     "issue verify": {
         "--platform", "--headed", "--browser", "--device", "--app", "--base-url", "--timeout", "--var", "--project",
     },
@@ -102,7 +103,7 @@ GLOBAL_FLAGS = {"--json", "--help", "--version"}
 
 #: Every command is `arcus <entity> <command>`. `arcus help --json` prints the full tree: it is the source of truth.
 COMMAND = re.compile(
-    r"\barcus (auth (?:login|logout|status)|project (?:list|init|mode (?:show|set)|(?:platforms|sources) (?:list|add|remove))|test (?:check|fmt|run|push|pull|status|accept|attach|detach)|issue (?:show|verify)|case show|docs (?:list|show)|browser list|device list|config (?:show|set|unset))\b([^\n`]*)"
+    r"\barcus (auth (?:login|logout|status)|project (?:list|init|mode (?:show|set)|(?:platforms|sources) (?:list|add|remove))|test (?:check|fmt|run|push|pull|status|accept|attach|detach)|issue (?:show|verify|judge)|case show|docs (?:list|show)|browser list|device list|config (?:show|set|unset))\b([^\n`]*)"
 )
 FLAG = re.compile(r"(?<![\w-])(--[a-z][a-z-]*)")
 

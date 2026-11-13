@@ -6,7 +6,7 @@ import pytest
 
 from support import REFERENCES_DIR, REPO_ROOT, SKILLS, markdown_files, prose, read, skill_path
 
-SKILL_NAME = re.compile(r"/arcus:([a-z]+)")
+SKILL_NAME = re.compile(r"/arcus:([a-z]+(?:-[a-z]+)*)")
 
 #: Who names whom. A skill that ends a job names the next skill, so the user is never left at a dead end.
 HANDOVERS = {
@@ -19,6 +19,7 @@ HANDOVERS = {
     "accept": {"setup", "push", "sync"},
     "sync": {"setup", "push", "run", "accept", "context"},
     "mode": {"setup", "push"},
+    "pr-check": {"setup", "author", "run", "push", "verify"},
 }
 
 

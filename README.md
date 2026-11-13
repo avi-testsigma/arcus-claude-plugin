@@ -77,6 +77,7 @@ claude plugin install arcus@testsigma
 | `/arcus:accept [files]` | Qi mode. After a policy check and your yes, accepts pushed versions into Arcus |
 | `/arcus:sync` | Shows where each file stands, pulls QI's changes, detaches and attaches files, and covers the pipeline check |
 | `/arcus:mode` | Shows the project mode and switches it with a dry run and your yes |
+| `/arcus:pr-check` | Qi mode, for a deployed PR (in CI or by hand). Runs the issue's tests on the PR's build and the base build, writes scenarios to try to break the change, keeps only what fails on the PR alone, and has QI judge each against the story into one check and one PR comment. A story case that breaks blocks; the rest is advisory |
 | `/arcus:help` | Shows the skills and the usual flow |
 
 **Typical flow in qi mode:** `/arcus:setup` once, then `/arcus:context CW-412`, `/arcus:author`, `/arcus:run`,
@@ -117,7 +118,8 @@ setup ──► context ──► author ──► run ──► push ──► 
 
 ## Privacy
 
-The plugin sends nothing by itself: it has no hooks and no scripts. When you push, the `arcus` CLI sends your tests and
+The plugin sends nothing by itself: it has no hooks, and its one script (`scripts/pr-check.mjs`) only runs the `arcus`
+CLI and reads its output. When you push, the `arcus` CLI sends your tests and
 elements to the Arcus project you chose, using your own sign-in. See the
 [Testsigma Privacy Policy](https://testsigma.com/privacy-policy).
 
@@ -128,7 +130,8 @@ elements to the Arcus project you chose, using your own sign-in. See the
 plugins/arcus/
   .claude-plugin/plugin.json        the plugin manifest
   commands/help.md                  /arcus:help
-  skills/{setup,context,author,run,verify,push,accept,sync,mode}/   one SKILL.md each
+  skills/{setup,context,author,run,verify,push,accept,sync,mode,pr-check}/   one SKILL.md each
+  scripts/pr-check.mjs              the comparison /arcus:pr-check runs (node --test plugins/arcus/scripts/)
   references/                       notes the skills read when they need them
   tests/                            tests of the documents (pytest)
   evals/                            behavioural cases: `claude plugin eval plugins/arcus`

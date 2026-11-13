@@ -39,3 +39,14 @@ jobs:
       # The tests that ask a real arcus CLI are skipped here: CI has none.
       - name: Run the document tests
         run: python -m pytest -q
+
+  scripts:
+    name: script tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+      - name: Run the script tests
+        run: node --test plugins/arcus/scripts/
