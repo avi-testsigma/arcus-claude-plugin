@@ -58,7 +58,8 @@ low-confidence bug there is reported as unclear.
 Locally, the app's sign-in can be tied to one host, so both builds are served at the same address one after the other.
 Set `ARCUS_PR_URL` and `ARCUS_BASE_URL` to that address, and `ARCUS_PR_CHECK_SWITCH` to a command that replaces the PR's
 build with the base build and returns once it is serving. The skill runs everything on the PR's build first, runs the
-switch once, then runs the base side.
+switch once, then runs the base side. Findings are pushed after the switch, so the build a push records is the checked-out base
+commit; in CI, where nothing is switched, it is the PR's head.
 
 ## Environment
 

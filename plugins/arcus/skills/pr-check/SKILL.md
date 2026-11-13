@@ -75,7 +75,9 @@ Then, inside the budget (`references/pr-check.md`):
    in QI with no test file here, pending or not, covers nothing: write the scenario. Say the list with one line of why
    each.
 3. **Write each** as one test through `/arcus:author`'s rules, in the project's `tests/`, named
-   `pr-check-<short-name>.sigma`. Reuse the repo's elements first. `arcus test check` clean before it runs.
+   `pr-check-<short-name>.sigma`. Use only elements this folder tracks (`arcus test status` lists them); write any other
+   locator into the test. QI refuses a pushed test that uses an untracked element, so a finding built on one could not
+   become a pending case. `arcus test check` clean before it runs.
 4. **Run it on the PR's build** with `/arcus:run`'s rules. A failure whose owner is the test (a wrong locator, a missing
    wait): fix the test, at most three rounds. A failure whose owner is the app: keep it as it is. That is a candidate.
    A pass: the scenario found nothing; keep it in the count and move on.
